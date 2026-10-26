@@ -1,0 +1,76 @@
+<%@ page import="java.sql.*" %>
+<%
+String classDate = request.getParameter("class_date");
+String subject = request.getParameter("subject");
+String topic = request.getParameter("topic");
+String assignment = request.getParameter("assignment");
+String announcement = request.getParameter("announcement");
+String url = "jdbc:mysql://localhost:3306/class_catchup?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+String username = "root";
+String password = "windows";
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con =
+    DriverManager.getConnection(url, username, password);
+String sql =
+    "INSERT INTO class_updates " +
+    "(class_date, subject, topic, assignment, announcement) " +
+    "VALUES (?, ?, ?, ?, ?)";
+PreparedStatement ps =
+    con.prepareStatement(sql);
+ps.setString(1, classDate);
+ps.setString(2, subject);
+ps.setString(3, topic);
+ps.setString(4, assignment);
+ps.setString(5, announcement);
+ps.executeUpdate();
+ps.close();
+con.close();
+%>
+<html>
+<head>
+    <title>Update Saved</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f7fb;
+            text-align: center;
+            padding-top: 120px;
+        }
+        .box {
+            background-color: white;
+            width: 450px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        h2 {
+            color: #283593;
+        }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #283593;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h2>Class Update Saved Successfully!</h2>
+    <p>
+        The class information has been saved
+        to the database.
+    </p>
+    <a href="index.jsp">
+        Home
+    </a>
+    <a href="addClass.jsp">
+        Add Another
+    </a>
+</div>
+</body>
+</html>

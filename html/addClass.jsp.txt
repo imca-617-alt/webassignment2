@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Class Update</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial;
+            background-color: #f5f7fb;
+            margin: 0;
+        }
+        nav {
+            background-color: #283593;
+            padding: 18px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+        .container {
+            width: 550px;
+            margin: 45px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        h2 {
+            text-align: center;
+            color: #283593;
+            margin-bottom: 25px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 11px;
+            margin: 8px 0 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #283593;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #1a237e;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo">
+        Class Catch-Up
+    </div>
+    <div>
+        <a href="index.jsp">Home</a>
+        <a href="viewClass.jsp">Class Updates</a>
+        <a href="addClass.jsp">Add Update</a>
+    </div>
+</nav>
+<div class="container">
+    <h2>Add Class Update</h2>
+    <form action="saveClass.jsp" method="post">
+        <label>Date:</label>
+        <input type="date"
+               name="class_date"
+               required>
+        <label>Subject:</label>
+        <select name="subject" required>
+            <option value="">
+                Select Subject
+            </option>
+            <option>
+                Web Technology
+            </option>
+            <option>
+                Operation Research
+            </option>
+            <option>
+                OOMD
+            </option>
+            <option>
+                Software Engineering
+            </option>
+        </select>
+        <label>Topic Covered:</label>
+        <textarea
+            name="topic"
+            required>
+        </textarea>
+        <label>Assignment:</label>
+        <textarea
+            name="assignment">
+        </textarea>
+        <label>Announcement:</label>
+        <textarea
+            name="announcement">
+        </textarea>
+        <button type="submit">
+            Save Class Update
+        </button>
+    </form>
+</div>
+</body>
+</html>

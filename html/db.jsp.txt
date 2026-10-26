@@ -1,0 +1,8 @@
+<%@ page import="java.sql.*" %>
+<%
+String url = "jdbc:mysql://localhost:3306/class_catchup?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+String username = "root";
+String password = "windows";
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = DriverManager.getConnection(url, username, password);
+%>

@@ -1,0 +1,246 @@
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Class Updates</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fb;
+    color: #333;
+}
+nav {
+    background-color: #283593;
+    padding: 18px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.container {
+    width: 80%;
+    max-width: 850px;
+    margin: 45px auto;
+}
+.heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.heading h1 {
+    color: #283593;
+    margin-bottom: 10px;
+}
+.heading p {
+    color: #666;
+}
+.search-box {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-align: center;
+}
+select,
+input {
+    padding: 12px;
+    margin: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+button {
+    padding: 12px 25px;
+    background-color: #283593;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover {
+    background-color: #1a237e;
+}
+.result {
+    background-color: white;
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.result h2 {
+    color: #283593;
+    margin-bottom: 20px;
+}
+.info {
+    margin: 18px 0;
+    padding: 15px;
+    background-color: #f5f7fb;
+    border-radius: 8px;
+}
+.info h3 {
+    color: #283593;
+    margin-bottom: 7px;
+}
+.info p {
+    line-height: 1.5;
+}
+.no-result {
+    background-color: white;
+    padding: 25px;
+    margin-top: 25px;
+    text-align: center;
+    border-radius: 10px;
+}
+footer {
+    margin-top: 80px;
+    background-color: #283593;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+</style>
+</head>
+<body>
+<nav>
+    <div class="logo">
+        Class Catch-Up
+    </div>
+    <div>
+        <a href="index.jsp">Home</a>
+        <a href="viewClass.jsp">Class Updates</a>
+        <a href="addClass.jsp">Add Update</a>
+    </div>
+</nav>
+<div class="container">
+    <div class="heading">
+        <h1>Find Your Class Update</h1>
+        <p>
+            Select a subject and date to see what happened in class.
+        </p>
+    </div>
+    <div class="search-box">
+        <form method="post">
+            <select name="subject">
+                <option>
+                    Web Technology
+                </option>
+                <option>
+                    Operation Research
+                </option>
+                <option>
+                    OOMD
+                </option>
+                <option>
+                    Software Engineering
+                </option>
+            </select>
+            <input type="date"
+                   name="class_date"
+                   required>
+            <button type="submit">
+                Search
+            </button>
+        </form>
+    </div>
+<%
+String subject = request.getParameter("subject");
+String date = request.getParameter("class_date");
+if(subject != null && date != null)
+{
+    String url = "jdbc:mysql://localhost:3306/class_catchup?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    String username = "root";
+    String password = "windows";
+    Class.forName(
+        "com.mysql.cj.jdbc.Driver"
+    );
+    Connection con =
+        DriverManager.getConnection(
+            url,
+            username,
+            password
+        );
+    String sql =
+        "SELECT * FROM class_updates " +
+        "WHERE subject = ? AND class_date = ?";
+    PreparedStatement ps =
+        con.prepareStatement(sql);
+    ps.setString(1, subject);
+    ps.setString(2, date);
+    ResultSet rs =
+        ps.executeQuery();
+    if(rs.next())
+    {
+%>
+<div class="result">
+    <h2>
+        <%= rs.getString("subject") %>
+    </h2>
+    <div class="info">
+        <h3>📅 Date</h3>
+        <p>
+            <%= rs.getString("class_date") %>
+        </p>
+    </div>
+    <div class="info">
+        <h3>📚 Topic Covered</h3>
+        <p>
+            <%= rs.getString("topic") %>
+        </p>
+    </div>
+    <div class="info">
+        <h3>📝 Assignment</h3>
+        <p>
+            <%= rs.getString("assignment") %>
+        </p>
+    </div>
+    <div class="info">
+        <h3>📢 Announcement</h3>
+        <p>
+            <%= rs.getString("announcement") %>
+        </p>
+    </div>
+</div>
+<%
+    }
+    else
+    {
+%>
+<div class="no-result">
+    <h3>
+        No class update found.
+    </h3>
+    <p>
+        Try selecting another subject or date.
+    </p>
+</div>
+<%
+    }
+    rs.close();
+    ps.close();
+    con.close();
+}
+%>
+</div>
+<footer>
+    <p>
+        © 2026 Class Catch-Up Portal
+    </p>
+</footer>
+</body>
+</html>
